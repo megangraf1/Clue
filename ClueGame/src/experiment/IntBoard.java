@@ -10,18 +10,24 @@ public class IntBoard {
 	private HashSet<BoardCell> targets;
 	private BoardCell[][] grid;
 	private Set<BoardCell> adjList;
+	private Set<BoardCell> allCells;
 	
 	
-	public IntBoard() {
+	public IntBoard(int numRows, int numColumns) {
+	
 		
 		super();
 		// need to allocate space for all the sets used in the tests
 		//use a size of zero so no exception errors
-		
-		
-		//for i
-			// for j
-				//populates the board
+
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numColumns; j++) {
+				BoardCell myCell = new BoardCell(i,j);
+				allCells.put(myCell);
+				myCell.calcAdjacencies();
+			}
+		}
+			
 		calcAdjacencies();
 	}
 	public Set calcAdjacencies(){
