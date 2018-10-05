@@ -53,9 +53,9 @@ public class IntBoard {
 		
 		while (moreSteps == true) {
 			for (BoardCell thisCell : start) {						//go through the initial adjacents
-				tempSet = calcAdjacencies(thisCell);			//get the set of adjacents for each of those
-				for (BoardCell thatCell : tempSet) {			//go through each of *those* sets
-					targets.add(thatCell);							//add that set to the new targets loop
+				tempSet = calcAdjacencies(thisCell);				//get the set of adjacents for each of those
+				for (BoardCell thatCell : tempSet) {				//go through each of *those* sets
+					targets.add(thatCell);							//add that cell to the new targets loop
 				}
 			} 
 			targets.removeAll(start);								//no backtracking allowed
@@ -70,8 +70,9 @@ public class IntBoard {
 	public Set<BoardCell> getAdjList(BoardCell cell) {
 		return adjMatrix.get(cell);								//get the matching list from the Map directly
 	}
-	public HashSet<BoardCell> getTargets() {					//update to call calcTargets
-		return targets;
+	public Set<BoardCell> getTargets(BoardCell startCell, int pathLength) {					 
+		Set<BoardCell> mySet = calcTargets(startCell, pathLength);
+		return mySet;
 	}
 	public BoardCell getCell(int row, int column) {
 		BoardCell cell = new BoardCell(row,column);
