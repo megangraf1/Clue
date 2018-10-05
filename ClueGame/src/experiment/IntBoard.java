@@ -43,31 +43,34 @@ public class IntBoard {
 		return adjList;
 	}
 	
-	public HashSet calcTargets(BoardCell startCell, int pathLength){
+	public Set<BoardCell> calcTargets(BoardCell startCell, int pathLength){
+		boolean moreSteps = true;
+		int numOfLoops = 0;
 		//calculate adjacencies as many times as pathlength, for each adjacent cell
 		HashSet<BoardCell> targets = new HashSet<BoardCell>();
+		Set<BoardCell> tempSet = new HashSet<BoardCell>();
+		Set<BoardCell> start = calcAdjacencies(startCell);
 		
-		/*int i = 1;												//check if this should start at 0 or 1
-		while (i <= pathLength) {
-			Set <BoardCell> adjacents = adjMatrix.get(startCell);	//get the adjacents for where you start
-			Iterator<BoardCell> iter = adjacents.iterator();
-			while (iter.hasNext()) {
-				BoardCell keyCell = iter;
-				
-				
+		while (moreSteps == true) {
+			for (BoardCell thisCell : start) {						//go through the initial adjacents
+				tempSet = calcAdjacencies(thisCell);			//get the set of adjacents for each of those
+				for (BoardCell thatCell : tempSet) {			//go through each of *those* sets
+					targets.add(thatCell);							//add that set to the new targets loop
+				}
 			} 
-			
-			//don't add if adjacents.contains()
-			
-			i++;
-		} */
-		return targets;
+			targets.removeAll(start);								//no backtracking allowed
+			numOfLoops++;
+			start.clear();
+			start.addAll(targets);
+			if (numOfLoops == pathLength) moreSteps = false;		//break out of the loop
+		}
+		return start;
 	}
 
 	public Set<BoardCell> getAdjList(BoardCell cell) {
 		return adjMatrix.get(cell);								//get the matching list from the Map directly
 	}
-	public HashSet<BoardCell> getTargets() {
+	public HashSet<BoardCell> getTargets() {					//update to call calcTargets
 		return targets;
 	}
 	public BoardCell getCell(int row, int column) {

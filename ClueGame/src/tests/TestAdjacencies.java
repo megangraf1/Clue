@@ -30,7 +30,7 @@ class TestAdjacencies {
 	{
 		BoardCell cell = board.getCell(0, 0);
 		board.calcTargets(cell, 3);
-		Set<BoardCell> targets = board.getTargets();		//To do - update when getTargets() is finished
+		Set<BoardCell> targets = board.getTargets();		
 		assertEquals(6, targets.size());
 		assertTrue(targets.contains(board.getCell(3, 0)));
 		assertTrue(targets.contains(board.getCell(2, 1)));
