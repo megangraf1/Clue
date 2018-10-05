@@ -1,10 +1,10 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.util.Set;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import experiment.BoardCell;
 import experiment.IntBoard;
@@ -14,7 +14,7 @@ class TestAdjacencies {
 	
 	
 	public void beforeAll() {
-		board = new IntBoard();
+		board = new IntBoard(3,3);
 	}
 	@Test
 	public void testAdjacency0() 
@@ -30,7 +30,7 @@ class TestAdjacencies {
 	{
 		BoardCell cell = board.getCell(0, 0);
 		board.calcTargets(cell, 3);
-		Set targets = board.getTargets();
+		Set<BoardCell> targets = board.getTargets();		//To do - update when getTargets() is finished
 		assertEquals(6, targets.size());
 		assertTrue(targets.contains(board.getCell(3, 0)));
 		assertTrue(targets.contains(board.getCell(2, 1)));
