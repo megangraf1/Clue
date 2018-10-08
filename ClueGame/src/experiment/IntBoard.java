@@ -31,29 +31,28 @@ public class IntBoard {
 		calcAdjacencies();
 	}
 
-	public void calcAdjacencies(){
-		for (int i = 0; i <= numRows; i++) {		//iterate thru grid instead
-			for (int j = 0; j <= numColumns; j++) {
+	public void calcAdjacencies(){					//i -> rows
+		for (int i = 0; i < numRows; i++) {		//iterate thru grid instead
+			for (int j = 0; j < numColumns; j++) {
 				Set<BoardCell> returnSet = new HashSet<BoardCell>();	//reinitialized for each cell
-				int cellX = i;
-				int cellY = j;
+				int myRow = i;
+				int myColumn = j;
 				
-				if (cellX - 1 >= 0) {
-					returnSet.add(grid[cellX - 1][cellY]);
+				if (myRow - 1 >= 0) {
+					returnSet.add(grid[myRow - 1][myColumn]);
 				}
-				if (cellX + 1 < numRows) {
-					returnSet.add(grid[cellX + 1][cellY]);
+				if (myRow + 1 < numRows - 1) {
+					returnSet.add(grid[myRow + 1][myColumn]);
 				}
-				if (cellY - 1 >= 0) {
-					returnSet.add(grid[cellX][cellY - 1]);
+				if (myColumn - 1 >= 0) {
+					returnSet.add(grid[myRow][myColumn - 1]);
 				}
-				if (cellY + 1 < numColumns) {
-					returnSet.add(grid[cellX][cellY + 1]);
+				if (myColumn + 1 < numColumns - 1) {
+					returnSet.add(grid[myRow][myColumn + 1]);
 				}			
 				adjMatrix.put(grid[i][j], returnSet);
 			}
-		}
-		
+		}		
 	}
 
 	

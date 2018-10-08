@@ -9,8 +9,8 @@ import org.junit.Test;
 import experiment.BoardCell;
 import experiment.IntBoard;
 
-class TestAdjacencies {
-	private IntBoard board = new IntBoard(3,3);
+public class TestAdjacencies {
+	public IntBoard board = new IntBoard(3,3);
 	
 	
 	public TestAdjacencies() {
