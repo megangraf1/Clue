@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.Set;
 
 public class IntBoard {
-	public Map<BoardCell, Set<BoardCell>> adjMatrix;
+	public static Map<BoardCell, Set<BoardCell>> adjMatrix = new HashMap<BoardCell, Set<BoardCell>>();
 	public Set<BoardCell> visited;
 	public BoardCell[][] grid;	
 	public Set<BoardCell> allCells;
 
-	int numRows;		//These are up here so they can be accessed by the calcAdjacencies
-	int numColumns;
+	public static int numRows = 4;		//These are up here so they can be accessed by the calcAdjacencies
+	public static int numColumns = 4;
 
 
 	public IntBoard(int numRows, int numColumns) {
@@ -22,7 +22,7 @@ public class IntBoard {
 		//use a size of zero so no exception errors
 		Set<BoardCell> allCells = new HashSet<BoardCell>();
 		BoardCell[][] grid = new BoardCell[numRows + 1][numColumns + 1];
-		Map<BoardCell, Set<BoardCell>> adjMatrix = new HashMap<BoardCell, Set<BoardCell>>();
+
 		for (int i = 0; i <= numRows; i++) {
 			for (int j = 0; j <= numColumns; j++) {
 				BoardCell myCell = new BoardCell(i,j);
@@ -33,25 +33,30 @@ public class IntBoard {
 		calcAdjacencies();
 	}
 
-	public Set<BoardCell> calcAdjacencies(){		
-		Set<BoardCell> adjList  = new HashSet<BoardCell>();									//This is inside the method because it will be re-initiated for each cell
-		for (int i = 0; i < numRows; i++) {
-			for (int j = 0; j < numColumns; j++) {
-				int myRow = i;
-				int myColumn = j;
+	public Map<BoardCell, Set<BoardCell>> calcAdjacencies(){
+		for (BoardCell cell : allCells) {
+			Set<BoardCell> returnSet = new HashSet<BoardCell>();
+			int cellX = cell.row;
+			int cellY = cell.column;
 
-				if (myRow > 0) adjList.add(grid[myRow + 1][myColumn]);							//adjacent Below
-				if (myRow < numRows - 1) adjList.add(grid[myRow - 1][myColumn]); 				//above
-				if (myColumn > 0) adjList.add(grid[myRow][myColumn - 1]);						//left
-				if (myColumn < numColumns - 1) adjList.add(grid[myRow][myColumn + 1]);			//right	
+			if (cellX - 1 >= 0) {
+				returnSet.add(grid[cellX - 1][cellY]);
 			}
-			System.out.println("hit calcadj");
+			if (cellX + 1 <= numRows) {
+				returnSet.add(grid[cellX + 1][cellY]);
+			}
+			if (cellY - 1 >= 0) {
+				returnSet.add(grid[cellX][cellY - 1]);
+			}
+			if (cellY + 1 <= numColumns) {
+				returnSet.add(grid[cellX][cellY + 1]);
+			}
 			
-			for (BoardCell a : adjList) System.out.println(a.row + " " + a.column);
-
+			adjMatrix.put(cell, returnSet);
 		}
-		return adjList;
+		return adjMatrix;
 	}
+
 	/*
 	public Set<BoardCell> calcTargets(BoardCell startCell, int pathLength){
 		boolean moreSteps = true;
@@ -93,9 +98,8 @@ public class IntBoard {
 		return cell;
 	}
 	//TODO - visited
-	public static void main(String[] args) {
-		IntBoard myBoard = new IntBoard(3,3);
-
+	public static void main(String []args) {
+		IntBoard myBoard = new IntBoard(numRows,numColumns);
 	}
 
 }
