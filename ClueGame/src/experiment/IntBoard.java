@@ -58,26 +58,30 @@ public class IntBoard {
 	
 	public void calcTargets(BoardCell thisCell, int pathLength){
 		Set<BoardCell> visited = new HashSet<BoardCell>();
-		Set<BoardCell> adjacentCells;
+		Set<BoardCell> adjacentCells = new HashSet<BoardCell>();
 		targets.clear();
 		visited.add(thisCell);
-		adjacentCells = adjMatrix.get(thisCell);
+		adjacentCells = adjMatrix.get(grid[thisCell.row][thisCell.column]);
 		for (BoardCell adjCell : adjacentCells) {
-			if (visited.contains(adjCell)) {					//move to the next adjCell if you've already visited this one
-				continue;
+			for (BoardCell v : visited) {							//can't compare cells directly
+				if ((v.row == adjCell.row) && (v.column == adjCell.column)){
+					continue;
+				}
 			}
 			if (pathLength == 1) {
 				targets.add(adjCell);
 			}
 			else {
-				calcTargets(adjCell, pathLength-1);
+				calcTargets(adjCell, (pathLength-1));
 			}
 		}		
 		
 		for (BoardCell t : targets) {							//remove internal visited cells
-			if (visited.contains(t)) {
-				targets.remove(t);
-			}
+			for (BoardCell v : visited) {							//can't compare cells directly
+				if ((t.row == v.row) && (t.column == v.column)){
+					targets.remove(grid[t.row][t.column]);
+				}
+			}			
 		}
 	}
 	

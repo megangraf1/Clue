@@ -35,8 +35,7 @@ public class TestAdjacencies {
 		assertEquals(2, testList.size());
 	}
 	@Test
-	public void testTargets0_3()
-	{
+	public void testTargets0_3(){
 //		beforeAll();
 		BoardCell cell = board.getCell(0, 3);
 		board.calcTargets(cell, 3);

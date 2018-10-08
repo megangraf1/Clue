@@ -22,10 +22,11 @@ public class BoardCell {
 	public int getColumn() {
 		return column;
 	}
-	
 
-
-	
+	public BoardCell getCell(int row, int column) {
+		BoardCell cell = new BoardCell(row, column);
+		return cell;
+	}
 	
 	
 }
