@@ -36,7 +36,11 @@ public class IntBoard {
 		int myColumn = myCell.column;
 		
 		if (myRow > 0) adjList.add(new BoardCell(myRow - 1, myColumn));						//adjacent above
-		if (myRow < numRows - 1) adjList.add(new BoardCell(myRow + 1, myColumn)); 			//below
+		if (myRow < numRows - 1) {
+			adjList.add(new BoardCell(myRow + 1, myColumn)); 	
+			System.out.println("Made it!");//below
+		}
+		
 		if (myColumn > 0) adjList.add(new BoardCell(myRow, myColumn - 1));					//left
 		if (myColumn < numColumns - 1) adjList.add(new BoardCell(myRow, myColumn + 1));		//right	
 		
@@ -45,7 +49,7 @@ public class IntBoard {
 	
 	public Set<BoardCell> calcTargets(BoardCell startCell, int pathLength){
 		boolean moreSteps = true;
-		int numOfLoops = 0;
+		int numOfLoops = 0;											// how many times you've gone through
 		//calculate adjacencies as many times as pathlength, for each adjacent cell
 		HashSet<BoardCell> targets = new HashSet<BoardCell>();
 		Set<BoardCell> tempSet = new HashSet<BoardCell>();
@@ -82,5 +86,7 @@ public class IntBoard {
 
 		return cell;
 	}
+	//TODO - visited
+	
 
 }
