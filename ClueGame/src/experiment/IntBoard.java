@@ -26,35 +26,34 @@ public class IntBoard {
 		for (int i = 0; i <= numRows; i++) {
 			for (int j = 0; j <= numColumns; j++) {
 				BoardCell myCell = new BoardCell(i,j);
-				allCells.add(myCell);
 				grid[i][j] = myCell;
 			}
 		}
 		calcAdjacencies();
 	}
 
-	public Map<BoardCell, Set<BoardCell>> calcAdjacencies(){
-		for (BoardCell cell : allCells) {
-			Set<BoardCell> returnSet = new HashSet<BoardCell>();
-			int cellX = cell.row;
-			int cellY = cell.column;
-
-			if (cellX - 1 >= 0) {
-				returnSet.add(grid[cellX - 1][cellY]);
+	public void calcAdjacencies(){
+		for (int i = 0; i <= numRows; i++) {		//iterate thru grid instead
+			for (int j = 0; j <= numColumns; j++) {
+				Set<BoardCell> returnSet = new HashSet<BoardCell>();
+				int cellX = i;
+				int cellY = j;
+				
+				if (cellX - 1 >= 0) {
+					returnSet.add(grid[cellX - 1][cellY]);
+				}
+				if (cellX + 1 < numRows) {
+					returnSet.add(grid[cellX + 1][cellY]);
+				}
+				if (cellY - 1 >= 0) {
+					returnSet.add(grid[cellX][cellY - 1]);
+				}
+				if (cellY + 1 < numColumns) {
+					returnSet.add(grid[cellX][cellY + 1]);
+				}			
+				adjMatrix.put(grid[i][j], returnSet);
 			}
-			if (cellX + 1 <= numRows) {
-				returnSet.add(grid[cellX + 1][cellY]);
-			}
-			if (cellY - 1 >= 0) {
-				returnSet.add(grid[cellX][cellY - 1]);
-			}
-			if (cellY + 1 <= numColumns) {
-				returnSet.add(grid[cellX][cellY + 1]);
-			}
-			
-			adjMatrix.put(cell, returnSet);
 		}
-		return adjMatrix;
 	}
 
 	/*
