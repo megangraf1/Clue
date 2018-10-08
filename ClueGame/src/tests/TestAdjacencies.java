@@ -13,7 +13,6 @@ class TestAdjacencies {
 	private IntBoard board = new IntBoard(3,3);
 	
 	
-	
 	public TestAdjacencies() {
 		super();
 	}
