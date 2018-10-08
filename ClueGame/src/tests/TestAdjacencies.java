@@ -4,14 +4,13 @@ import static org.junit.Assert.*;
 
 import java.util.Set;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import experiment.BoardCell;
 import experiment.IntBoard;
 
 class TestAdjacencies {
-	IntBoard board;
+	private IntBoard board = new IntBoard(3,3);
 	
 	
 	
@@ -19,17 +18,17 @@ class TestAdjacencies {
 		super();
 	}
 
-
-	@Before
-	public void beforeAll() {
-		board = new IntBoard(3,3);		
-	}
+//
+//	@Before
+//	public void beforeAll() {
+//		board = new IntBoard(3,3);		
+//	}
 	
 	
 	@Test
 	public void testAdjacency0() 
 	{
-		beforeAll();
+//		beforeAll();
 		BoardCell cell = board.getCell(0,0);
 		Set<BoardCell> testList = board.getAdjList(cell);
 		assertTrue(testList.contains(board.getCell(1, 0)));
@@ -39,8 +38,8 @@ class TestAdjacencies {
 	@Test
 	public void testTargets0_3()
 	{
-		beforeAll();
-		BoardCell cell = board.getCell(0, 0);
+//		beforeAll();
+		BoardCell cell = board.getCell(0, 3);
 		board.calcTargets(cell, 3);
 		Set<BoardCell> targets = board.getTargets(cell, 3);		
 		assertEquals(6, targets.size());

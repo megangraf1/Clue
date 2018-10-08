@@ -7,10 +7,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class IntBoard {
-	private Map<BoardCell, Set<BoardCell>> adjMatrix;
-	private Set<BoardCell> visited;
-	private BoardCell[][] grid;	
-	private Set<BoardCell> allCells;
+	public Map<BoardCell, Set<BoardCell>> adjMatrix;
+	public Set<BoardCell> visited;
+	public BoardCell[][] grid;	
+	public Set<BoardCell> allCells;
 
 	int numRows = 4;		//These are up here so they can be accessed by the calcAdjacencies
 	int numColumns = 4;
@@ -20,12 +20,14 @@ public class IntBoard {
 		super();
 		// need to allocate space for all the sets used in the tests
 		//use a size of zero so no exception errors
-
+		Set<BoardCell> allCells = new HashSet<BoardCell>();
+		Map<BoardCell, Set<BoardCell>> adjMatrix = new HashMap<BoardCell, Set<BoardCell>>();
 		for (int i = 0; i < numRows; i++) {
 			for (int j = 0; j < numColumns; j++) {
 				BoardCell myCell = new BoardCell(i,j);
 				allCells.add(myCell);
 				adjMatrix.put(myCell, calcAdjacencies(myCell));
+				System.out.print(adjMatrix.get(myCell));
 			}
 		}
 	}
@@ -36,9 +38,9 @@ public class IntBoard {
 		int myColumn = myCell.column;
 		
 		if (myRow > 0) adjList.add(new BoardCell(myRow - 1, myColumn));						//adjacent above
-		if (myRow < numRows - 1) {
+		if (myRow < numRows) {
 			adjList.add(new BoardCell(myRow + 1, myColumn)); 	
-			System.out.println("Made it!");//below
+			System.out.println("Made it to below loop");									//below
 		}
 		
 		if (myColumn > 0) adjList.add(new BoardCell(myRow, myColumn - 1));					//left
@@ -87,6 +89,9 @@ public class IntBoard {
 		return cell;
 	}
 	//TODO - visited
-	
+	public static void main(String[] args) {
+		IntBoard myBoard = new IntBoard(3,3);
+		
+	}
 
 }
