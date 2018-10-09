@@ -6,13 +6,13 @@ import java.util.Map;
 import java.util.Set;
 
 public class IntBoard {
-	public Map<BoardCell, Set<BoardCell>> adjMatrix;
-	public Set<BoardCell> visited = new HashSet<BoardCell>();
-	public BoardCell[][] grid;	
-	public Set<BoardCell> targets = new HashSet<BoardCell>();
+	private Map<BoardCell, Set<BoardCell>> adjMatrix;
+	private Set<BoardCell> visited = new HashSet<BoardCell>();
+	private BoardCell[][] grid;	
+	private Set<BoardCell> targets = new HashSet<BoardCell>();
 
-	public int numRows;	//These are up here so they can be accessed by the calcAdjacencies
-	public int numColumns;
+	private int numRows;	//These are up here so they can be accessed by the calcAdjacencies
+	private int numColumns;
 	
 	public IntBoard(int numRows, int numColumns) {
 		

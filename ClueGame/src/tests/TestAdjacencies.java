@@ -108,8 +108,7 @@ public class TestAdjacencies {
 		assertTrue(targets.contains(board.getCell(1, 1)));
 		assertTrue(targets.contains(board.getCell(2, 2)));
 		assertTrue(targets.contains(board.getCell(3, 3)));
-//		assertTrue(targets.contains(board.getCell(0, 3)));
-//		assertTrue(targets.contains(board.getCell(1, 0)));
+//		
 	}
 
 }
