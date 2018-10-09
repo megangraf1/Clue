@@ -6,34 +6,37 @@ import java.util.Map;
 import java.util.Set;
 
 public class IntBoard {
-	public static Map<BoardCell, Set<BoardCell>> adjMatrix;
+	public Map<BoardCell, Set<BoardCell>> adjMatrix;
 	public Set<BoardCell> visited;
 	public BoardCell[][] grid;	
 	public Set<BoardCell> targets = new HashSet<BoardCell>();
 
-	public static int NUMROWS = 4;		//These are up here so they can be accessed by the calcAdjacencies
-	public static int NUMCOLUMNS = 4;
+	public int numRows;	//These are up here so they can be accessed by the calcAdjacencies
+	public int numColumns;
 
 
 	public IntBoard(int numRows, int numColumns) {
+		
 		super();
 		// need to allocate space for all the sets used in the tests
 		//use a size of zero so no exception errors
+		this.numRows = numRows;
+		this.numColumns = numColumns;
 		adjMatrix = new HashMap<BoardCell, Set<BoardCell>>();
-		grid = new BoardCell[numRows + 1][numColumns + 1];
+		grid = new BoardCell[numRows][numColumns];
 
-		for (int i = 0; i <= numRows; i++) {
-			for (int j = 0; j <= numColumns; j++) {
-				BoardCell myCell = new BoardCell(i,j);
-				grid[i][j] = myCell;
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numColumns; j++) {
+//				BoardCell myCell = new BoardCell(i,j);
+				grid[i][j] = new BoardCell(i,j);
 			}
 		}
 		calcAdjacencies();
 	}
 
 	public void calcAdjacencies(){					//i -> rows
-		for (int i = 0; i < NUMROWS; i++) {		//iterate thru grid instead
-			for (int j = 0; j < NUMCOLUMNS; j++) {
+		for (int i = 0; i < numRows; i++) {		//iterate thru grid instead
+			for (int j = 0; j < numColumns; j++) {
 				Set<BoardCell> returnSet = new HashSet<BoardCell>();	//reinitialized for each cell
 				int myRow = i;
 				int myColumn = j;
@@ -41,13 +44,13 @@ public class IntBoard {
 				if (myRow - 1 >= 0) {
 					returnSet.add(grid[myRow - 1][myColumn]);
 				}
-				if (myRow + 1 < NUMROWS ) {
+				if (myRow + 1 < numRows ) {
 					returnSet.add(grid[myRow + 1][myColumn]);
 				}
 				if (myColumn - 1 >= 0) {
 					returnSet.add(grid[myRow][myColumn - 1]);
 				}
-				if (myColumn + 1 < NUMCOLUMNS) {
+				if (myColumn + 1 < numColumns) {
 					returnSet.add(grid[myRow][myColumn + 1]);
 				}			
 //				System.out.println("      " +myRow + "," + myColumn);
@@ -57,6 +60,7 @@ public class IntBoard {
 //				}
 				adjMatrix.put(grid[i][j], returnSet);
 				returnSet.clear();
+				
 			}
 			
 		}		
@@ -93,11 +97,11 @@ public class IntBoard {
 	}
 	
 	public Set<BoardCell> getAdjList(BoardCell cell) {
-		System.out.println(adjMatrix.get(grid[1][1]));
+//		System.out.println(adjMatrix.get(grid[cell.row][cell.column]));
 //		for(BoardCell i : adjMatrix.get(grid[cell.row][cell.column])) {
 //			System.out.println(i.row);
 //		}
-		return adjMatrix.get(grid[cell.getRow()][cell.getColumn()]);								//get the matching list from the Map directly
+		return adjMatrix.get(cell);								//get the matching list from the Map directly
 	}
 	
 	public Set<BoardCell> getTargets(BoardCell startCell, int pathLength) {					 
@@ -106,16 +110,18 @@ public class IntBoard {
 	}
 	
 	public BoardCell getCell(int row, int column) {
-		
-		//assigns a new cell to have a certain row and column
-		//to be then used as the parameter in the targets set
-		//to test for containment
 
 		return grid[row][column];
 	}
+	
 
 	public static void main(String []args) {
-		IntBoard myBoard = new IntBoard(NUMROWS,NUMCOLUMNS);
+		IntBoard myBoard = new IntBoard(4,4);
+		BoardCell cell = myBoard.getCell(1, 1);
+		System.out.println(myBoard.getCell(1,1).toString());
+		for(BoardCell e: myBoard.getAdjList(cell)) {
+			System.out.println(e.toString());
+		}
 	}
 
 }

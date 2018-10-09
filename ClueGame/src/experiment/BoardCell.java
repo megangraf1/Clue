@@ -1,6 +1,11 @@
 package experiment;
 
 public class BoardCell {
+	@Override
+	public String toString() {
+		return "BoardCell [row=" + row + ", column=" + column + "]";
+	}
+
 	int row;
 	int column;
 	
