@@ -1,3 +1,6 @@
+//John McGroarty
+//Meg Graf
+
 package tests;
 
 import static org.junit.Assert.*;

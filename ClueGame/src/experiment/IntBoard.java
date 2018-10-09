@@ -1,3 +1,6 @@
+//John McGroarty
+//Meg Graf
+
 package experiment;
 
 import java.util.HashMap;
