@@ -29,18 +29,18 @@ public class IntBoard {
 
 		for (int i = 0; i < numRows; i++) {
 			for (int j = 0; j < numColumns; j++) {
-//				BoardCell myCell = new BoardCell(i,j);
+
 				grid[i][j] = new BoardCell(i,j);
 			}
 		}
 		calcAdjacencies();
 	}
 
-	public Map calcAdjacencies(){					//i -> rows
-		for (int i = 0; i < numRows; i++) {		//iterate thru grid instead
+	public Map<BoardCell, Set<BoardCell>> calcAdjacencies(){					//i -> rows
+		for (int i = 0; i < numRows; i++) {										//iterate thru grid instead
 			for (int j = 0; j < numColumns; j++) {
-					//reinitialized for each cell
-				int myRow = i;
+																				//reinitialized for each cell
+				int myRow = i;	
 				int myColumn = j;
 				Set<BoardCell> returnSet = new HashSet<BoardCell>();
 
@@ -56,11 +56,7 @@ public class IntBoard {
 				if (myColumn + 1 < numColumns) {
 					returnSet.add(grid[myRow][myColumn + 1]);
 				}			
-//				System.out.println("      " +myRow + "," + myColumn);
-//				for(BoardCell b : returnSet) {
-					
-//					System.out.println(b.row + "," + b.column);
-//				}
+
 				adjMatrix.put(grid[i][j], returnSet);
 				
 				
@@ -72,9 +68,7 @@ public class IntBoard {
 
 	
 	public void findAllTargets(BoardCell thisCell, int pathLength){
-		
-		Set<BoardCell> adjacentCells = new HashSet<BoardCell>();
-		
+			
 		visited.add(thisCell);
 		for (BoardCell cell : adjMatrix.get(thisCell)) {
 			if (visited.contains(cell)) {
@@ -90,27 +84,7 @@ public class IntBoard {
 			}
 			
 			visited.remove(cell);
-		}
-//		for (BoardCell adjCell : adjacentCells) {
-//			if (visited.contains(adjCell)) {
-//				continue;
-//			}
-//			if (pathLength == 1) {
-//				targets.add(adjCell);
-//			}
-//			else {
-//				findAllTargets(adjCell, (pathLength-1));
-//			}
-//		}		
-//		
-//		for (BoardCell t : targets) {							//remove internal visited cells
-//										//can't compare cells directly
-//				if(visited.contains(t)){
-//					
-////				if ((t.row == v.row) && (t.column == v.column)){
-////					targets.remove(t);
-//				}
-//			}			
+		}		
 		}
 	
 	public void calcTargets(BoardCell thisCell, int pathLength) {
@@ -120,10 +94,6 @@ public class IntBoard {
 		findAllTargets(thisCell, pathLength);
 	}
 	public Set<BoardCell> getAdjList(BoardCell cell) {
-//		System.out.println(adjMatrix.get(grid[cell.row][cell.column]));
-//		for(BoardCell i : adjMatrix.get(grid[cell.row][cell.column])) {
-//			System.out.println(i.row);
-//		}
 		return adjMatrix.get(cell);								//get the matching list from the Map directly
 	}
 	
@@ -141,10 +111,6 @@ public class IntBoard {
 	public static void main(String []args) {
 		IntBoard myBoard = new IntBoard(4,4);
 		BoardCell cell = myBoard.getCell(1, 1);
-//		System.out.println(myBoard.getCell(1,1).toString());
-//		for(BoardCell e: myBoard.getAdjList(cell)) {
-//			System.out.println(e.toString());
-//		}
 		Set<BoardCell> targets = myBoard.getTargets(cell, 3);
 		for (BoardCell t : targets) {
 			System.out.println(t.toString());
