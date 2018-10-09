@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import clueGame.Board;
 import clueGame.BoardCell;
 
 public class FileIOTests {
@@ -21,7 +22,7 @@ public class FileIOTests {
 		fail("Not yet implemented");
 	}
 
-	private Static Board board;
+	private static Board board;
 
 	@BeforeClass
 	public static void setUp() {
@@ -31,7 +32,7 @@ public class FileIOTests {
 	}
 
 	@Test
-	public void testRooms){
+	public void testRooms()){
 		Map<Character, String> legend = board.getLegend();
 		assertEquals(LEGEND_SIZE, legend.size());
 		assertEquals("Hotel", legend.get('H'));				//first
@@ -76,22 +77,21 @@ public class FileIOTests {
 		Assert.assertEquals(NUM_DOORS, doorCount);
 	}
 
-}
 
-public void testRoomInitials() {
-	// Test first cell in room
-	assertEquals('O', board.getCellAt(0, 0).getInitial());
-	assertEquals('T', board.getCellAt(0, 6).getInitial());
-	assertEquals('A', board.getCellAt(9, 18).getInitial());
-	// Test last cell in room
-	assertEquals('O', board.getCellAt(5, 4).getInitial());
-	assertEquals('H', board.getCellAt(24, 4).getInitial());
-	assertEquals('K', board.getCellAt(24, 24).getInitial());
-	// Test a walkway
-	assertEquals('W', board.getCellAt(17, 13).getInitial());
-	// Test the closet
-	assertEquals('X', board.getCellAt(12, 12).getInitial());
-}
+	public void testRoomInitials() {
+		// Test first cell in room
+		assertEquals('O', board.getCellAt(0, 0).getInitial());
+		assertEquals('T', board.getCellAt(0, 6).getInitial());
+		assertEquals('A', board.getCellAt(9, 18).getInitial());
+		// Test last cell in room
+		assertEquals('O', board.getCellAt(5, 4).getInitial());
+		assertEquals('H', board.getCellAt(24, 4).getInitial());
+		assertEquals('K', board.getCellAt(24, 24).getInitial());
+		// Test a walkway
+		assertEquals('W', board.getCellAt(17, 13).getInitial());
+		// Test the closet
+		assertEquals('X', board.getCellAt(12, 12).getInitial());
+	}
 
 }
 
