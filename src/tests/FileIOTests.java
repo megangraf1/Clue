@@ -1,3 +1,8 @@
+/*CSCI306: Clue
+ * FileIOTest Class
+ * Authors: Meg Graf and JP McGroarty
+ * 
+ */
 package tests;
 
 import static org.junit.Assert.*;
@@ -9,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import junit.framework.Assert;
+import clueGame.BadConfigException;
 import clueGame.Board;
 import clueGame.BoardCell;
 import clueGame.DoorDirection;
@@ -23,7 +29,7 @@ public class FileIOTests {
 	private static Board board;
 
 	@BeforeClass
-	public static void setUp() {
+	public static void setUp() throws BadConfigException{
 		board = Board.getInstance();
 		board.setConfigFiles("ExceBoardGame.csv", "ClueRooms.txt");
 		board.initialize();
@@ -52,7 +58,7 @@ public class FileIOTests {
 		BoardCell room = board.getCellAt(5,1); //Sheriff's office
 		assertTrue(room.isDoorway());
 		assertEquals(DoorDirection.DOWN, room.getDoorDirection());
-		room = board.getCellAt(9,4);
+		room = board.getCellAt(9,5);
 		assertTrue(room.isDoorway());
 		assertEquals(DoorDirection.UP, room.getDoorDirection());
 		room = board.getCellAt(10,18);
@@ -61,18 +67,21 @@ public class FileIOTests {
 		room = board.getCellAt(20,16);
 		assertTrue(room.isDoorway());
 		assertEquals(DoorDirection.RIGHT, room.getDoorDirection());
+		room = board.getCellAt(16,0);
+		assertTrue(room.isDoorway());		//Should fail, not a door
 	}
 
 	@Test 
 	public void testNumDoors() {
 		int doorCount = 0;
-		for (int row=0; row<board.getNumRows(); row++)
+		for (int row=0; row<board.getNumRows(); row++) {			//iterates through the board and counts doors
 			for (int col=0; col<board.getNumColumns(); col++) {
 				BoardCell cell = board.getCellAt(row, col);
 				if (cell.isDoorway()) {
 					doorCount++;
 				}
 			}
+		}
 		Assert.assertEquals(NUM_DOORS, doorCount);
 	}
 

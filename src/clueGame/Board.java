@@ -1,3 +1,8 @@
+/*CSCI306: Clue
+ * board Class
+ * Authors: Meg Graf and JP McGroarty
+ * 
+ */
 package clueGame;
 
 import java.util.HashMap;
@@ -51,7 +56,8 @@ public class Board {
 	}
 	
 	public BoardCell getCellAt(int row, int column) {
-		return board[row][column];
+		BoardCell board = new BoardCell(0,0);
+		return board;
 	}
 	
 

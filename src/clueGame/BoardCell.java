@@ -1,6 +1,8 @@
-//John McGroarty
-//Meg Graf
-
+/*CSCI306: Clue
+ * BoardCell Class
+ * Authors: Meg Graf and JP McGroarty
+ * 
+ */
 package clueGame;
 
 public class BoardCell {
