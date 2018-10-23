@@ -1,8 +1,7 @@
-/*CSCI306: Clue
- * BoardCell Class
- * Authors: Meg Graf and JP McGroarty
- * 
- */
+//John McGroarty
+//Meg Graf
+
+
 package clueGame;
 
 public class BoardCell {
@@ -21,6 +20,7 @@ public class BoardCell {
 	public BoardCell() {
 		this.row = 0;
 		this.column = 0;
+		this.initial = 'V';
 		this.doorDir = DoorDirection.NONE;
 	}
 	
@@ -56,7 +56,9 @@ public class BoardCell {
 	}
 
 	public boolean isDoorway() {
-		// TODO Auto-generated method stub
+		if (this.doorDir != DoorDirection.NONE) {
+			return true;
+		}
 		return false;
 	}
 

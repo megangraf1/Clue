@@ -13,7 +13,6 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import junit.framework.Assert;
 import clueGame.BadConfigException;
 import clueGame.Board;
 import clueGame.BoardCell;
@@ -39,6 +38,7 @@ public class FileIOTests {
 	@Test
 	public void testRooms(){
 		Map<Character, String> legend = board.getLegend();
+		System.out.println(legend.size());
 		assertEquals(LEGEND_SIZE, legend.size());
 		assertEquals("Hotel", legend.get('H'));				//first
 		assertEquals("Saloon", legend.get('S'));
@@ -57,6 +57,8 @@ public class FileIOTests {
 	public void testDoorDirections() {
 		BoardCell room = board.getCellAt(5,1); //Sheriff's office
 		assertTrue(room.isDoorway());
+		System.out.println(room.getColumn());
+		System.out.println(room.getRow());
 		assertEquals(DoorDirection.DOWN, room.getDoorDirection());
 		room = board.getCellAt(9,5);
 		assertTrue(room.isDoorway());

@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-
 import clueGame.BoardCell;
 
 public class Board {
@@ -17,14 +16,13 @@ public class Board {
 	int numRows ;
 	int numColumns;
 	public static final int MAX_BOARD_SIZE = 40;
-	private BoardCell[][] board = new BoardCell[numRows][numColumns];
+	private BoardCell[][] board;
 	private Map<Character, String> legend = new HashMap<Character, String>();
 	private Map<BoardCell, Set<BoardCell>> adjMatrix = new HashMap<BoardCell, Set<BoardCell>>();
 	private Set<BoardCell> targets = new HashSet<BoardCell>();
 	private String boardConfigFile = "";
 	private String roomConfigFile = "";
-	//	private BoardCell[][] board;	
-
+	
 	private Set<BoardCell> visited = new HashSet<BoardCell>();
 	// variable used for singleton pattern
 	private static Board theInstance = new Board(25, 25);
@@ -100,7 +98,6 @@ public class Board {
 	}
 
 	public Map<Character, String> getLegend() {
-		
 		return legend;
 	}
 
@@ -110,8 +107,8 @@ public class Board {
 		visited.add(thisCell);
 		findAllTargets(thisCell, pathLength);
 	}
-	public Set<BoardCell> getAdjList(BoardCell cell) {
-		return adjMatrix.get(cell);								//get the matching list from the Map directly
+	public Set<BoardCell> getAdjList(int x, int y) {
+		return adjMatrix.get(board[y][x]);						//get the matching list from the Map directly
 	}
 	public Set<BoardCell> getTargets(BoardCell startCell, int pathLength) {					 
 		calcTargets(startCell, pathLength);
@@ -149,7 +146,17 @@ public class Board {
 	}
 
 	public void initialize() {
-
+		board = new BoardCell[numRows][numColumns];
+		try {
+			loadRoomConfig();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			loadBoardConfig();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public BoardCell getCellAt(int row, int column) {
@@ -159,7 +166,6 @@ public class Board {
 
 
 	public void loadRoomConfig() throws FileNotFoundException {
-		
 		String line= "";
 		char symbol;
 		String room = "";
@@ -192,7 +198,6 @@ public class Board {
 			numCols = list.length;
 		}
 		this.theInstance = new Board(numRows, numCols);
-		char letter;
 		this.numColumns = numCols;
 		this.numRows = numRows;
 		file = new FileReader(this.boardConfigFile);
@@ -202,7 +207,7 @@ public class Board {
 			list = line.split(",");
 			
 			for(int i = 0; i < list.length; i++) {
-				if(list[i].length()>1) {
+				if(list[i].length()>1) {							//it'll only enter this loop for doors
 					System.out.println(board[row][i].toString());
 
 					switch (list[i].charAt(1)) {
@@ -230,10 +235,9 @@ public class Board {
 				}
 
 				board[row][i].setInitial(list[i].charAt(0));
-				
+			
 			}
 			row++;
-
 		}	
 	}
 
