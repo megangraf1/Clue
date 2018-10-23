@@ -101,21 +101,24 @@ public class Board {
 		return legend;
 	}
 
-	public void calcTargets(BoardCell thisCell, int pathLength) {
+	public void calcTargets(int x, int y, int pathLength) {
+		BoardCell thisCell = board[y][x];
 		visited.clear();
 		targets.clear();
 		visited.add(thisCell);
 		findAllTargets(thisCell, pathLength);
 	}
+	
 	public Set<BoardCell> getAdjList(int x, int y) {
 		return adjMatrix.get(board[y][x]);						//get the matching list from the Map directly
 	}
+	
 	public Set<BoardCell> getTargets(BoardCell startCell, int pathLength) {					 
-		calcTargets(startCell, pathLength);
+		calcTargets(startCell.getColumn(), startCell.getRow(), pathLength);
 		return targets;
 	}
+	
 	public BoardCell getCell(int row, int column) {
-
 		return board[row][column];
 	}
 
