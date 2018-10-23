@@ -11,15 +11,31 @@ public class BoardCell {
 		return "BoardCell [row=" + row + ", column=" + column + "]";
 	}
 
-	int row;
-	int column;
-	char initial;
+	private int row;
+	private int column;
+	private char initial;
+	
+	private DoorDirection doorDir;
+	
 	
 	public BoardCell() {
-		this.row = -1;
-		this.column = -1;
+		this.row = 0;
+		this.column = 0;
+		this.doorDir = DoorDirection.NONE;
 	}
 	
+	public DoorDirection getDoorDir() {
+		return doorDir;
+	}
+
+	public void setDoorDir(DoorDirection doorDir) {
+		this.doorDir = doorDir;
+	}
+
+	public void setInitial(char initial) {
+		this.initial = initial;
+	}
+
 	public BoardCell(int row, int column) {
 		super();
 		this.row = row;
@@ -44,8 +60,8 @@ public class BoardCell {
 		return false;
 	}
 
-	public Object getDoorDirection() {
-		return null;
+	public DoorDirection getDoorDirection() {
+		return doorDir;
 	}
 	
 	public char getInitial() {

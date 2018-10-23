@@ -1,0 +1,11 @@
+H, Hotel, Card
+S, Saloon, Card
+X, Pond, Other
+W, Walkway, Other
+T, Town Hall, Card
+A, Stable, Card
+J, Jail, Card
+O, Sheriff's Office, Card
+B, Barber, Card 
+G, General Store, Card
+K, Bank, Card

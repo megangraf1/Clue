@@ -31,7 +31,7 @@ public class FileIOTests {
 	@BeforeClass
 	public static void setUp() throws BadConfigException{
 		board = Board.getInstance();
-		board.setConfigFiles("ExceBoardGame.csv", "ClueRooms.txt");
+		board.setConfigFiles("ExcelBoardGame.csv", "ClueRooms.txt");
 		board.initialize();
 	}
 
@@ -82,7 +82,7 @@ public class FileIOTests {
 				}
 			}
 		}
-		Assert.assertEquals(NUM_DOORS, doorCount);
+		assertEquals(NUM_DOORS, doorCount);
 	}
 
 
