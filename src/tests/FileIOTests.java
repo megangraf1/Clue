@@ -30,7 +30,7 @@ public class FileIOTests {
 	@BeforeClass
 	public static void setUp() throws BadConfigException{
 		board = Board.getInstance();
-		board.setConfigFiles("ExcelBoardGame.csv", "ClueRooms.txt");
+		board.setConfigFiles("src/ExcelBoardGame.csv", "src/ClueRooms.txt");
 		board.initialize();
 	}
 

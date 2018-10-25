@@ -79,7 +79,7 @@ public class CTest{
 		assertTrue(testList.contains(board.getCellAt(19, 17)));
 		assertTrue(testList.contains(board.getCellAt(20, 16)));
 		assertEquals(3, testList.size());
-		
+
 		// Test beside a door direction UP
 		testList = board.getAdjList(18, 2);
 		assertTrue(testList.contains(board.getCellAt(19, 2)));
@@ -107,6 +107,7 @@ public class CTest{
 		assertTrue(testList.contains(board.getCellAt(8, 14)));
 		assertTrue(testList.contains(board.getCellAt(6, 14)));
 		assertEquals(4, testList.size());
+	}
 
 
 
@@ -118,11 +119,11 @@ public class CTest{
 	@Test
 	public void testTargetsOneStep() {
 		board.calcTargets(10, 24, 1);
-		Set<BoardCell> targets= board.getTargets(board[10][24], 1);
+		Set<BoardCell> targets= board.getTargets();
 		assertEquals(2, targets.size());
 		assertTrue(targets.contains(board.getCellAt(20, 7)));
 		assertTrue(targets.contains(board.getCellAt(21, 6)));	
-	//Incomplete from here out
+		//Incomplete from here out
 		board.calcTargets(14, 0, 1);
 		targets= board.getTargets();
 		assertEquals(3, targets.size());

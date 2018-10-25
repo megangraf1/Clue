@@ -2,6 +2,7 @@
 //Meg Graf
 package clueGame;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
@@ -12,204 +13,129 @@ import java.util.Set;
 import clueGame.BoardCell;
 
 public class Board {
-
-	int numRows ;
-	int numColumns;
 	public static final int MAX_BOARD_SIZE = 40;
+	
+	private int numRows;
+	private int numColumns;
+	private Map<BoardCell, Set<BoardCell>> adjMatrix;	
+	private Map<Character, String> legend;
+	private Set<BoardCell> visited;	
+	private Set<BoardCell> targets;
 	private BoardCell[][] board;
-	private Map<Character, String> legend = new HashMap<Character, String>();
-	private Map<BoardCell, Set<BoardCell>> adjMatrix = new HashMap<BoardCell, Set<BoardCell>>();
-	private Set<BoardCell> targets = new HashSet<BoardCell>();
-	private String boardConfigFile = "";
-	private String roomConfigFile = "";
+		
+	private String boardConfigFile;
+	private String roomConfigFile;
 	
-	private Set<BoardCell> visited = new HashSet<BoardCell>();
 	// variable used for singleton pattern
-	private static Board theInstance = new Board(25, 25);
-	// constructor is private to ensure only one can be created
-	private Board(int numRows, int numColumns) {
+	private static Board theInstance = new Board();
+	// constructor is private to ensure only one can be created	
+	
+	private Board() {
 		super();
-		// need to allocate space for all the sets used in the tests
-		//use a size of zero so no exception errors
-		this.numRows = numRows;
-		this.numColumns = numColumns;
 		adjMatrix = new HashMap<BoardCell, Set<BoardCell>>();
+		legend = new HashMap<Character, String>();
 		board = new BoardCell[numRows][numColumns];
-
-		for (int i = 0; i < numRows; i++) {
-			for (int j = 0; j < numColumns; j++) {
-
-				board[i][j] = new BoardCell(i,j);
-			}
-		}
-		calcAdjacencies();
-	}
-
-
-	public Map<BoardCell, Set<BoardCell>> calcAdjacencies(){					//i -> rows
-		for (int i = 0; i < numRows; i++) {										//iterate thru grid instead
-			for (int j = 0; j < numColumns; j++) {
-				//reinitialized for each cell
-				int myRow = i;	
-				int myColumn = j;
-				Set<BoardCell> returnSet = new HashSet<BoardCell>();
-
-				if (myRow - 1 >= 0) {
-					returnSet.add(board[myRow - 1][myColumn]);
-				}
-				if (myRow + 1 < numRows ) {
-					returnSet.add(board[myRow + 1][myColumn]);
-				}
-				if (myColumn - 1 >= 0) {
-					returnSet.add(board[myRow][myColumn - 1]);
-				}
-				if (myColumn + 1 < numColumns) {
-					returnSet.add(board[myRow][myColumn + 1]);
-				}			
-
-				adjMatrix.put(board[i][j], returnSet);
-
-
-			}
-
-		}		
-		return adjMatrix;
+		visited = new HashSet<BoardCell>();
+		targets = new HashSet<BoardCell>();
 	}
 	
-
-	public String getBoardConfigFile() {
-		return boardConfigFile;
-	}
-
-
-	public String getRoomConfigFile() {
-		return roomConfigFile;
-	}
-
-
 	// this method returns the only Board
 	public static Board getInstance() {
 		return theInstance;
 	}
+	
 
 	public void setConfigFiles(String boardConfigFile, String roomConfigFile) {
 		this.boardConfigFile = boardConfigFile;
 		this.roomConfigFile = roomConfigFile;
 	}
 
-	public Map<Character, String> getLegend() {
-		return legend;
+	public String getBoardConfigFile() {
+		return boardConfigFile;
 	}
 
-	public void calcTargets(int x, int y, int pathLength) {
-		BoardCell thisCell = board[y][x];
-		visited.clear();
-		targets.clear();
-		visited.add(thisCell);
-		findAllTargets(thisCell, pathLength);
+	public String getRoomConfigFile() {
+		return roomConfigFile;
 	}
 	
-	public Set<BoardCell> getAdjList(int x, int y) {
-		return adjMatrix.get(board[y][x]);						//get the matching list from the Map directly
-	}
-	
-	public Set<BoardCell> getTargets(BoardCell startCell, int pathLength) {					 
-		calcTargets(startCell.getColumn(), startCell.getRow(), pathLength);
-		return targets;
-	}
-	
-	public BoardCell getCell(int row, int column) {
-		return board[row][column];
-	}
-
-	public void findAllTargets(BoardCell thisCell, int pathLength){
-
-		visited.add(thisCell);
-		for (BoardCell cell : adjMatrix.get(thisCell)) {
-			if (visited.contains(cell)) {
-				continue;
-			}
-
-			visited.add(cell);
-			if (pathLength == 1) {
-				targets.add(cell);
-			}
-			else {
-				findAllTargets(cell, pathLength - 1);
-			}
-
-			visited.remove(cell);
-		}		
-	}
 	public int getNumRows() {
 		return numRows;
 	}
 	public int getNumColumns() {
 		return numColumns;
 	}
+	
+	public BoardCell getCellAt(int row, int column) {
+		return board[row][column];
+	}
 
 	public void initialize() {
-		board = new BoardCell[numRows][numColumns];
 		try {
 			loadRoomConfig();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		} catch (BadConfigException b) {
+			b.printStackTrace();
 		}
 		try {
 			loadBoardConfig();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
+		} catch (BadConfigException b) {
+			b.printStackTrace();
+		}		
+
 	}
 
-	public BoardCell getCellAt(int row, int column) {
-		return board[row][column];
-	}
-
-
-
-	public void loadRoomConfig() throws FileNotFoundException {
+	public void loadRoomConfig() throws FileNotFoundException, BadConfigException {
 		String line= "";
 		char symbol;
-		String room = "";
-		String[] list;
-
-		FileReader file = new FileReader(this.roomConfigFile);
-		Scanner scan = new Scanner(file);
+		String[] list;		
+		Scanner scan = new Scanner(new File(roomConfigFile));
+		
 		while(scan.hasNext()) {
 			line = scan.nextLine();
 			symbol = line.charAt(0);
 			list = line.split(", ");
-
+			
+			if(!list[2].equals("Card") && !list[2].equals("Other")) {
+				break;
+			}
+			
 			legend.put(symbol, list[1]);
 		}
+		
 		scan.close();
 	}
+	
 
-	public void loadBoardConfig() throws FileNotFoundException {
-		int numRows = 0;
-		int numCols = 0;
-		FileReader file = new FileReader(this.boardConfigFile);
-		Scanner scan = new Scanner(file);
-		String line = "";
-		String[] list; 
-		int row = 0;
-		while(scan.hasNext()) {
-			line = scan.nextLine();
-			list = line.split(",");
-			numRows++;
-			numCols = list.length;
+	public void loadBoardConfig() throws FileNotFoundException, BadConfigException {
+		calcDimensions();
+				
+		this.theInstance = new Board();
+		
+		board = new BoardCell[numRows][numColumns];
+		
+		Scanner scan = new Scanner(new File(boardConfigFile));
+		String line;
+		String[] list = scan.nextLine().split(", ");
+	
+		if (list.length != numColumns) {
+			throw new BadConfigException("Inconsistent number of columns");
 		}
-		this.theInstance = new Board(numRows, numCols);
-		this.numColumns = numCols;
-		this.numRows = numRows;
-		file = new FileReader(this.boardConfigFile);
-		scan = new Scanner(file);
+		
 		while(scan.hasNext()) {
 			line = scan.nextLine();
 			list = line.split(",");
 			
-			for(int i = 0; i < list.length; i++) {
+			if ((list[0].isEmpty()) || list[0].length() == 0) {
+				continue;
+			}
+			
+			int row = Integer.valueOf(list[0]);
+			
+			for(int i = 1; i < list.length + 1; i++) {
+				board[row][i] = new BoardCell(row, i);
 				if(list[i].length()>1) {							//it'll only enter this loop for doors
 					System.out.println(board[row][i].toString());
 
@@ -229,7 +155,6 @@ public class Board {
 						break;
 					default: 
 						board[row][i].setDoorDir(DoorDirection.NONE);
-						System.out.println("hey");
 						break;
 					}
 				}
@@ -237,16 +162,110 @@ public class Board {
 					board[row][i].setDoorDir(DoorDirection.NONE);
 				}
 
-				board[row][i].setInitial(list[i].charAt(0));
-			
+				board[row][i].setInitial(list[i].charAt(0));			
 			}
-			row++;
 		}	
+		calcAdjacencies();
+		scan.close();
+	}
+	
+	private void calcDimensions() throws FileNotFoundException{
+		numColumns = 0;
+		numRows = 0;
+		Scanner scan = new Scanner (new File(boardConfigFile));
+		String[] list = scan.nextLine().split(", ");
+		numColumns = list.length;
+		numRows++;
+		while(scan.hasNextLine()) {
+			scan.nextLine();
+			numRows++;
+		}
+		scan.close();
 	}
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public void calcAdjacencies(){												//i -> rows
+		for (int i = 0; i < numRows; i++) {										//iterate thru grid instead
+			for (int j = 0; j < numColumns; j++) {
+				//reinitialized for each cell
+				//System.out.println(board.toString());
+				int myRow = i;	
+				int myColumn = j;
+				Set<BoardCell> returnSet = new HashSet<BoardCell>();
+
+				if (myRow - 1 >= 0) {
+					returnSet.add(board[myRow - 1][myColumn]);
+				}
+				if (myRow + 1 < numRows ) {
+					returnSet.add(board[myRow + 1][myColumn]);
+				}
+				if (myColumn - 1 >= 0) {
+					returnSet.add(board[myRow][myColumn - 1]);
+				}
+				if (myColumn + 1 < numColumns) {
+					returnSet.add(board[myRow][myColumn + 1]);
+				}			
+
+				adjMatrix.put(board[i][j], returnSet);
+			}
+
+		}		
+	}
+	
+
+
+	public Map<Character, String> getLegend() {
+		return legend;
+	}
+
+	public void calcTargets(BoardCell cell, int pathLength) {
+		BoardCell thisCell = cell;
+		visited.clear();
+		targets.clear();
+		findAllTargets(thisCell, pathLength);
+	}
+	
+	public void calcTargets(int x, int y, int pathLength) {
+		BoardCell thisCell = board[y][x];
+		visited.clear();
+		targets.clear();
+		findAllTargets(thisCell, pathLength);
+	}
+	
+	public Set<BoardCell> getAdjList(int x, int y) {
+		return adjMatrix.get(board[y][x]);						//get the matching list from the Map directly
+	}
+	
+	public Set<BoardCell> getTargets() {			
+		return targets;
+	}
+
+
+	public void findAllTargets(BoardCell thisCell, int pathLength){
+
+		visited.add(thisCell);
+		for (BoardCell cell : adjMatrix.get(thisCell)) {
+			if (visited.contains(cell)) {
+				continue;
+			}
+
+			visited.add(cell);
+			if (pathLength == 1) {
+				targets.add(cell);
+			}
+			
+			else {
+				calcTargets(cell, pathLength - 1);
+				
+			}
+
+			visited.remove(cell);
+		}		
+	}
+
+
+	public static void main(String[] args) throws FileNotFoundException, BadConfigException {
 		Board board = getInstance();
-		board.setConfigFiles("CTestFiles/OwnBoard", "CTestFiles/Rooms");
+		board.setConfigFiles("src/ExcelBoardGame.csv", "src/ClueRooms.txt");
 		board.loadRoomConfig();
 		board.loadBoardConfig();
 		System.out.println(board.getLegend().size());

@@ -13,5 +13,9 @@ public class BadConfigException extends Exception {
 		// TODO Auto-generated constructor stub
 	}
 
+	public BadConfigException(String message) {
+		System.out.println(message);
+	}
+
 
 }
